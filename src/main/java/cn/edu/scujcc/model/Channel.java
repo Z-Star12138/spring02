@@ -18,6 +18,7 @@ public class Channel {
 	private String quality;
 	private String url;
 	private List<Comment> comments;
+	
 	private String cover;//ÃÌº”∑‚√Ê
 	
 	public String getCover() {
