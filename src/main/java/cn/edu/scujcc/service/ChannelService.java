@@ -127,6 +127,10 @@ public class ChannelService {
 			saved.setComments(c.getComments());
 			}
 		}
+		if (c.getCover() != null) {
+			saved.setCover(c.getCover());
+		}
+		
 		return repo.save(c);
 	}
 	

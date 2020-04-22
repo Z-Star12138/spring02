@@ -18,7 +18,14 @@ public class Channel {
 	private String quality;
 	private String url;
 	private List<Comment> comments;
+	private String cover;//添加封面
 	
+	public String getCover() {
+		return cover;
+	}
+	public void setCover(String cover) {
+		this.cover = cover;
+	}
 	/**
 	 * 返回此频道所有评论
 	 * @return
