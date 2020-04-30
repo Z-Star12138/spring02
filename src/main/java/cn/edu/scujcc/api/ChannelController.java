@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.edu.scujcc.model.Channel;
+import cn.edu.scujcc.model.Comment;
 import cn.edu.scujcc.service.ChannelService;
 
 @RestController
@@ -99,5 +100,21 @@ public class ChannelController {
 	@GetMapping("/p/{page}")
 	public List<Channel> getChannelsPage(@PathVariable int page){
 		return service.findChannelsPage(page);
+	}
+	
+	@PostMapping("/{channelId}/comment")
+	public Channel addComment(String channelId, Comment comment) {
+		Channel result = null;
+//		logger.debug("即将评论频道"+channelId+"评论对象"+comment);
+		//把评论保存到数据库
+		result = service.addComment(channelId, comment);
+		return result;
+	}
+	
+	@GetMapping("/{channelId}/hotcomments")
+	public List<Comment> hotComments(@PathVariable String channelId){
+		List<Comment> result = null;
+		result = service.hostComments(channelId);
+		return result;
 	}
 }

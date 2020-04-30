@@ -1,5 +1,6 @@
 package cn.edu.scujcc.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.data.annotation.Id;
@@ -37,6 +38,17 @@ public class Channel {
 	}
 	public void setComments(List<Comment> comments) {
 		this.comments = comments;
+	}
+	
+	/**
+	 * 向当前频道增加一条评论
+	 * @param comment	待增加评论
+	 */
+	public void addComment(Comment comment) {
+		if(null == this.comments) {
+			this.comments = new ArrayList<>();
+		}
+		this.comments.add(comment);
 	}
 	
 	public String getId() {

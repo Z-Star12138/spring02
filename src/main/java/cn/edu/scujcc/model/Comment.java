@@ -1,6 +1,8 @@
 package cn.edu.scujcc.model;
 
 import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 		
 	/**
 	 * 评论对象
@@ -22,6 +24,7 @@ public class Comment {
 	/**
 	 * 评论日期时间
 	 */
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dt = LocalDateTime.now();
 	
 	/**
