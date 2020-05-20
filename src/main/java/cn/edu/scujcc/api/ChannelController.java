@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.Cache;
 import org.springframework.cache.Cache.ValueWrapper;
 import org.springframework.cache.CacheManager;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -44,8 +43,7 @@ public class ChannelController {
 		logger.info("正在获取所有频道中");
 		Result<List<Channel>> result = new Result<List<Channel>>();
 		List<Channel> channels = service.getAllChannels();
-		result.setStatus(Result.OK);
-		result.setMessage("所有频道信息");
+		result = result.ok();
 		result.setDate(channels);
 		return result;
 	}
@@ -56,13 +54,12 @@ public class ChannelController {
 		Result<Channel> result = new Result<>();
 		Channel c = service.getChannel(id);
 		if(c != null ) {
-			result.setStatus(Result.OK);
-			result.setMessage("找到一个频道");
+			result = result.ok();
 			result.setDate(c);
 		}else {
-			result.setStatus(Result.ERROR);
+			logger.info("找不到指定频道");
+			result = result.error();
 			result.setMessage("找不到指定频道");
-			result.setDate(c);
 		}
 		return result;
 	}
@@ -78,10 +75,9 @@ public class ChannelController {
 		Result<Channel> result = new Result<>();
 		boolean del = service.deleteChannel(id);
 		if(del) {
-			result.setStatus(Result.OK);
-			result.setMessage("删除成功");
+			result = result.ok();
 		}else {
-			result.setStatus(Result.ERROR);
+			result = result.error();
 			result.setMessage("删除失败");
 		}
 		return result;
@@ -92,8 +88,7 @@ public class ChannelController {
 		logger.info("即将创建新频道，频道数据：" + c);
 		Result<Channel> result = new Result<>();
 		Channel saved = service.createChannel(c);
-		result.setStatus(Result.OK);
-		result.setMessage("创建一个频道");
+		result = result.ok();
 		result.setDate(saved);
 		return result;
 	}
@@ -103,6 +98,8 @@ public class ChannelController {
 		logger.info("成功，即将更新频道，频道数据：" + c);
 		Result<Channel> result = new Result<>();
 		Channel updated = service.updateChannel(c);
+		result = result.ok();
+		result.setDate(updated);
 		return result;
 	}
 	
@@ -154,9 +151,11 @@ public class ChannelController {
 	}
 	
 	@GetMapping("/{channelId}/hotcomments")
-	public List<Comment> hotComments(@PathVariable String channelId){
-		List<Comment> result = null;
-		result = service.hostComments(channelId);
+	public Result<List<Comment>> hotComments(@PathVariable String channelId){
+		Result<List<Comment>> result = new Result<List<Comment>>();
+		logger.debug("正在获取热门频道");
+		result = result.ok();
+		result.setDate(service.hostComments(channelId));
 		return result;
 	}
 }
