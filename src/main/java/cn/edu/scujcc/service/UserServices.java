@@ -3,7 +3,10 @@ package cn.edu.scujcc.service;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
+import org.springframework.util.DigestUtils;
 
 import cn.edu.scujcc.dao.UserRepository;
 import cn.edu.scujcc.model.User;
@@ -12,6 +15,8 @@ import cn.edu.scujcc.model.User;
 public class UserServices {
 	@Autowired
 	private UserRepository repo;
+	@Autowired
+	private CacheManager cacheManager;
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 	
 	/**
@@ -40,5 +45,26 @@ public class UserServices {
 			result = true;
 		}
 		return result;
+	}
+	
+	/*
+	 * 登记注册，并返回一个唯一编号(token)
+	 */
+	public String checkIn(String username) {
+		String temp = username + System.currentTimeMillis();
+		String token = DigestUtils.md5DigestAsHex(temp.getBytes());
+		Cache cache = cacheManager.getCache(User.CACHE_NAME);
+		cache.put(token, username);
+		return token;
+	}
+	
+	/**
+	 * 根据token查询当前用户是谁
+	 * @param token
+	 * @return
+	 */
+	public String currentUser(String token) {
+		Cache cache = cacheManager.getCache(User.CACHE_NAME);
+		return cache.get(token, String.class);
 	}
 }
