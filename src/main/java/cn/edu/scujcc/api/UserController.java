@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mongodb.operation.UserExistsOperation;
+
+import cn.edu.scujcc.model.Result;
 import cn.edu.scujcc.model.User;
 import cn.edu.scujcc.service.UserServices;
 
@@ -27,10 +30,18 @@ public class UserController {
 	private UserServices service;
 	
 	@PostMapping("/register")
-	public User register(@RequestBody User u) {
+	public Result<User> register(@RequestBody User u) {
+		Result<User> result = new Result<>();
 		logger.debug("即将注册用户，用户数据：" + u);
-		User saved = service.createUser(u);
-		return saved;
+		try {
+			result = result.ok();
+			result.setDate(service.createUser(u));
+		}catch (UserExistsOperation e){
+			logger.error("用户已经存在"， e);
+			result = result.error();
+			result.setMessage("用户已存在。");
+		}
+		return result;
 	}
 	
 	@GetMapping("/login/{username}/{password}")

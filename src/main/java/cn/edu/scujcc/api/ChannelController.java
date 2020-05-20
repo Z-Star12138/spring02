@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.edu.scujcc.model.Channel;
 import cn.edu.scujcc.model.Comment;
+import cn.edu.scujcc.model.Result;
 import cn.edu.scujcc.model.User;
 import cn.edu.scujcc.service.ChannelService;
 
@@ -39,20 +40,31 @@ public class ChannelController {
 	 * 
 	 * @return
 	 */
-	public List<Channel> getAllChannels(){
+	public Result<List<Channel>> getAllChannels(){
 		logger.info("正在获取所有频道中");
-		return service.getAllChannels();
+		Result<List<Channel>> result = new Result<List<Channel>>();
+		List<Channel> channels = service.getAllChannels();
+		result.setStatus(Result.OK);
+		result.setMessage("所有频道信息");
+		result.setDate(channels);
+		return result;
 	}
 	
 	@GetMapping("/{id}")
-	public Channel getChannel(@PathVariable String id) {
-		System.out.println("获取频道，id="+id);
+	public Result<Channel> getChannel(@PathVariable String id) {
+		logger.info("获取频道，id="+id);
+		Result<Channel> result = new Result<>();
 		Channel c = service.getChannel(id);
 		if(c != null ) {
-			return c;
+			result.setStatus(Result.OK);
+			result.setMessage("找到一个频道");
+			result.setDate(c);
 		}else {
-			return null;
+			result.setStatus(Result.ERROR);
+			result.setMessage("找不到指定频道");
+			result.setDate(c);
 		}
+		return result;
 	}
 	
 	/**
@@ -61,28 +73,37 @@ public class ChannelController {
 	 * @return
 	 */
 	@DeleteMapping("/{id}")
-	public ResponseEntity<String> deleteChannel(@PathVariable String id){
-		System.out.println("正在删除，id="+id);
-		boolean result = service.deleteChannel(id);
-		if(result) {
-			return ResponseEntity.ok().body("删除成功");
+	public Result<Channel> deleteChannel(@PathVariable String id){
+		logger.info("正在删除，id="+id);
+		Result<Channel> result = new Result<>();
+		boolean del = service.deleteChannel(id);
+		if(del) {
+			result.setStatus(Result.OK);
+			result.setMessage("删除成功");
 		}else {
-			return ResponseEntity.ok().body("删除失败");
+			result.setStatus(Result.ERROR);
+			result.setMessage("删除失败");
 		}
+		return result;
 	}
 	
 	@PostMapping
-	public Channel creatChannel(@RequestBody Channel c) {
-		System.out.println("即将创建新频道，频道数据：" + c);
+	public Result<Channel> creatChannel(@RequestBody Channel c) {
+		logger.info("即将创建新频道，频道数据：" + c);
+		Result<Channel> result = new Result<>();
 		Channel saved = service.createChannel(c);
-		return saved;
+		result.setStatus(Result.OK);
+		result.setMessage("创建一个频道");
+		result.setDate(saved);
+		return result;
 	}
 	
 	@PutMapping
-	public Channel updateChannel(@RequestBody Channel c) {
-		System.out.println("成功，即将更新频道，频道数据：" + c);
+	public Result<Channel> updateChannel(@RequestBody Channel c) {
+		logger.info("成功，即将更新频道，频道数据：" + c);
+		Result<Channel> result = new Result<>();
 		Channel updated = service.updateChannel(c);
-		return updated;
+		return result;
 	}
 	
 	@GetMapping("/q/{quality}")
