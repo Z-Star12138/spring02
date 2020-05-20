@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
  *
  */
 public class User {
+	public static final String CACHE_NAME = "users";
 	@Id
 	private String id;
 	private String username;

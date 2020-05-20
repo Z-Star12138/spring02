@@ -7,6 +7,9 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -26,7 +29,9 @@ public class ChannelService {
 	 * 
 	 * @return 频道List
 	 */
+	@Cacheable(cacheNames="channels", key="'all_channels'")
 	public List<Channel> getAllChannels() {
+		logger.debug("(启用缓存后，不显示这句话)从数据库中获取所有频道......");
 		return repo.findAll();
 	}
 
@@ -36,8 +41,10 @@ public class ChannelService {
 	 * @param channelI 频道编号
 	 * @return 频道对象，若未为查找到，返回null
 	 */
-	// 读数据库
+//	Cacheable作用是:将第一次获取的频道放入缓存去，#channelId是调用string参数，方便
+	@Cacheable(cacheNames="channels", key="#channelId")
 	public Channel getChannel(String channelId) {
+		logger.debug("(启用缓存后，不显示这句话)获取一个频道中......");
 		Optional<Channel> result = repo.findById(channelId);
 
 		if (result.isPresent()) {
@@ -82,12 +89,9 @@ public class ChannelService {
 	 * @param c 待保存的频道的对象(没有id值)
 	 * @return 保存后的频道(有id值)
 	 */
+	//CachePut作用是将新增的频道同时也放入缓存去
+	@CachePut(cacheNames="channels", key="#result.id")
 	public Channel createChannel(Channel c) {
-		// 找到目前最大ID，然后添加1作为新频道的ID
-//		int newId = channels.get(channels.size() - 1).getId() + 1;
-//		c.setId(newId);
-//		channels.add(c);
-//		return c;
 		return repo.save(c);
 	}
 
@@ -97,6 +101,7 @@ public class ChannelService {
 	 * @param c 新的频道信息，用于更新已存在的同一频道
 	 * @return 更细后的频道信息
 	 */
+	@CacheEvict(cacheNames="channels", key="'all_channles'")
 	public Channel updateChannel(Channel c) {
 //		Channel toUpdate = getChannel(c.getId());
 //		if(toUpdate != null) {

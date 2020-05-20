@@ -2,7 +2,12 @@ package cn.edu.scujcc.api;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.Cache;
+import org.springframework.cache.Cache.ValueWrapper;
+import org.springframework.cache.CacheManager;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,14 +20,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.edu.scujcc.model.Channel;
 import cn.edu.scujcc.model.Comment;
+import cn.edu.scujcc.model.User;
 import cn.edu.scujcc.service.ChannelService;
 
 @RestController
 @RequestMapping("/channel")
 public class ChannelController {
+	public static final Logger logger = LoggerFactory.getLogger(ChannelController.class);
+	
+	@Autowired
+	private CacheManager cacheManager;
+	
 	@Autowired
 	private ChannelService service;
-	
 	
 	@GetMapping
 	/**获取所有
@@ -30,6 +40,7 @@ public class ChannelController {
 	 * @return
 	 */
 	public List<Channel> getAllChannels(){
+		logger.info("正在获取所有频道中");
 		return service.getAllChannels();
 	}
 	
@@ -103,11 +114,21 @@ public class ChannelController {
 	}
 	
 	@PostMapping("/{channelId}/comment")
-	public Channel addComment(String channelId, Comment comment) {
+	public Channel addComment(@PathVariable String channelId,@RequestBody Comment comment) {
 		Channel result = null;
-//		logger.debug("即将评论频道"+channelId+"评论对象"+comment);
+		logger.debug("即将评论频道"+channelId+"评论对象"+comment);
+		//检查用户是否登录过
+		Cache cache = cacheManager.getCache(User.CACHE_NAME);
+		ValueWrapper obj = cache.get("current_user");
+		if(obj == null) {
+			logger.warn("用户未登录想评论，拒绝！");
+		} else {
 		//把评论保存到数据库
+		String username = (String) obj.get();
+		logger.debug("登录用户" + username + "正在评论");
+		comment.setAuthor(username);
 		result = service.addComment(channelId, comment);
+		}
 		return result;
 	}
 	
