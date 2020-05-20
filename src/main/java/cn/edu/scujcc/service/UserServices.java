@@ -8,6 +8,7 @@ import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
+import cn.edu.scujcc.UserExistException;
 import cn.edu.scujcc.dao.UserRepository;
 import cn.edu.scujcc.model.User;
 
@@ -22,11 +23,15 @@ public class UserServices {
 	/**
 	 * 新建用户
 	 */
-	public User createUser(User user) {
+	public User createUser(User user)  throws UserExistException  {
 		logger.debug("用户注册" + user);
 		User result =null;
 		//TODO  1.保存前把用户密码加密
 		//TODO  2.检查用户是否存在，  存在则允许不逊需注册
+		User u = repo.findOneByUsername(user.getUsername());
+		if (u!= null) {//说明用户已被占用
+			throw new UserExistException();
+		}
 		result = repo.save(user);
 		return result;
 	}

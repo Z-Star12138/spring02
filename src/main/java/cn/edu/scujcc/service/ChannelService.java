@@ -53,15 +53,6 @@ public class ChannelService {
 			return null;
 		}
 	}
-//		Channel result = null;
-	// 循环查找指定的频道
-//		for(Channel c: channels) {
-//			if (c.getId() == channelId) {
-//				result = c;
-//				break;
-//			}
-//		}
-//		return result;
 
 	/**
 	 * 删除指定的频道
@@ -74,14 +65,6 @@ public class ChannelService {
 		repo.deleteById(channelId);
 		return result;
 	}
-
-//		Channel c = getChannel(channelId);
-//		if(c != null ) {
-//			channels.remove(c);
-//			result = true;
-//		}
-//		return result;
-//	}
 
 	/**
 	 * 保存频道
@@ -103,15 +86,6 @@ public class ChannelService {
 	 */
 	@CacheEvict(cacheNames="channels", key="'all_channles'")
 	public Channel updateChannel(Channel c) {
-//		Channel toUpdate = getChannel(c.getId());
-//		if(toUpdate != null) {
-//			toUpdate.setTitle(c.getTitle());
-//			toUpdate.setQuality(c.getQuality());
-//			toUpdate.setUrl(c.getUrl());
-//		}
-//		return toUpdate;
-
-		// TODO 仅修改用户指定属性
 		Channel saved = getChannel(c.getId());// 读出用户原有的数据
 		if (c.getTitle() != null) {
 			saved.setTitle(c.getTitle());
@@ -134,8 +108,7 @@ public class ChannelService {
 		if (c.getCover() != null) {
 			saved.setCover(c.getCover());
 		}
-
-		return repo.save(c);
+		return repo.save(saved);
 	}
 
 	public List<Channel> searchByQuality(String quality) {

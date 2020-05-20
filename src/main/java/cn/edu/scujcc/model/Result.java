@@ -2,8 +2,8 @@ package cn.edu.scujcc.model;
 
 public class Result<T> {
 	public static final int OK = 1;
-	public static final int DUPLICATED = 1;
-	public static final int ERROR = 1;
+	public static final int DUPLICATED = -1;
+	public static final int ERROR = 0;
 	
 	private int status;
 	private String message;
@@ -31,7 +31,7 @@ public class Result<T> {
 	public Result<T> ok() {
 		Result<T> result = new Result<>();
 		result.setStatus(OK);
-		result.setMessage("操作成功");
+		result.setMessage("操作成功！");
 		return result;
 	}
 	public Result<T> error() {

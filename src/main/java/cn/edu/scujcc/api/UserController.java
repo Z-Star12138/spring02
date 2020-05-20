@@ -10,8 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mongodb.operation.UserExistsOperation;
-
+import cn.edu.scujcc.UserExistException;
 import cn.edu.scujcc.model.Result;
 import cn.edu.scujcc.model.User;
 import cn.edu.scujcc.service.UserServices;
@@ -21,21 +20,20 @@ import cn.edu.scujcc.service.UserServices;
 public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
-	
 	@Autowired
 	private UserServices service;
 	
 	@PostMapping("/register")
 	public Result<User> register(@RequestBody User u) {
 		Result<User> result = new Result<>();
-		logger.debug("¼´½«×¢²áÓÃ»§£¬ÓÃ»§Êı¾İ£º" + u);
+		logger.debug("å³å°†æ³¨å†Œç”¨æˆ·ï¼Œç”¨æˆ·æ•°æ®ï¼š" + u);
 		try {
 			result = result.ok();
 			result.setDate(service.createUser(u));
-		}catch (UserExistsOperation e){
-			logger.error("ÓÃ»§ÒÑ¾­´æÔÚ", e);
+		} catch (UserExistException e) {
+			logger.error("æ³¨å†Œç”¨æˆ·å·²å­˜åœ¨" + e);
 			result = result.error();
-			result.setMessage("ÓÃ»§ÒÑ´æÔÚ¡£");
+			result.setMessage("ç”¨æˆ·å·²å­˜åœ¨");
 		}
 		return result;
 	}
@@ -43,10 +41,10 @@ public class UserController {
 	@GetMapping("/login/{username}/{password}")
 	public Result<String> login(@PathVariable String username,
 			@PathVariable String password) {
-		logger.debug("ÓÃ»§" + username + "×¼±¸µÇÂ½£¬ÃÜÂëÊÇ£º" + password);
+		logger.debug("ç”¨æˆ·" + username + "å‡†å¤‡ç™»é™†ï¼Œå¯†ç æ˜¯ï¼š" + password);
 		Result<String> result = new Result<>();
 		boolean status = service.checkUser(username, password);
-		if(status) {//µÇÂ½³É¹¦£¬·µ»Ø1
+		if(status) {//ç™»é™†æˆåŠŸï¼Œè¿”å›1
 			result = result.ok();
 			result.setDate(service.checkIn(username));
 		}else {

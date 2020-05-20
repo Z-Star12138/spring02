@@ -33,7 +33,7 @@ public class Comment implements Serializable{
 	/**
 	 * 评论点赞数量
 	 */
-	private int star = 5;
+	private int star = 6;
 
 	public String getAuthor() {
 		return author;
@@ -105,7 +105,9 @@ public class Comment implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Comment [author=" + author + ", content=" + content + ", dt=" + dt + ", star=" + star + "]";
+		return "Comment [" + (author != null ? "author=" + author + ", " : "")
+				+ (content != null ? "content=" + content + ", " : "") + (dt != null ? "dt=" + dt + ", " : "") + "star="
+				+ star + "]";
 	}
 	
 }

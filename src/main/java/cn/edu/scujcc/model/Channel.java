@@ -20,7 +20,6 @@ public class Channel implements Serializable{
 	private String quality;
 	private String url;
 	private List<Comment> comments;
-	
 	private String cover;//ÃÌº”∑‚√Ê
 	
 	public String getCover() {
@@ -116,7 +115,8 @@ public class Channel implements Serializable{
 	}
 	@Override
 	public String toString() {
-		return "Channel [id=" + id + ", title=" + title + ", quality=" + quality + ", url=" + url + "]";
+		return "Channel [" + (id != null ? "id=" + id + ", " : "") + (title != null ? "title=" + title + ", " : "")
+				+ (quality != null ? "quality=" + quality + ", " : "") + (url != null ? "url=" + url : "") + "]";
 	}
 	
 }
