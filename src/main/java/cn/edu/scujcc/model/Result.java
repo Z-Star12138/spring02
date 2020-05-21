@@ -31,13 +31,13 @@ public class Result<T> {
 	public Result<T> ok() {
 		Result<T> result = new Result<>();
 		result.setStatus(OK);
-		result.setMessage("²Ù×÷³É¹¦£¡");
+		result.setMessage("æ“ä½œæˆåŠŸï¼");
 		return result;
 	}
 	public Result<T> error() {
 		Result<T> result = new Result<>();
 		result.setStatus(ERROR);
-		result.setMessage("²Ù×÷Ê§°Ü£¡");
+		result.setMessage("æ“ä½œå¤±è´¥ï¼ï¼ï¼");
 		return result;
 	}
 }

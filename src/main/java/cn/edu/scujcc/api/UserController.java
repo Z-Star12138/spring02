@@ -41,7 +41,6 @@ public class UserController {
 	@GetMapping("/login/{username}/{password}")
 	public Result<String> login(@PathVariable String username,
 			@PathVariable String password) {
-		logger.debug("用户" + username + "准备登陆，密码是：" + password);
 		Result<String> result = new Result<>();
 		boolean status = service.checkUser(username, password);
 		if(status) {//登陆成功，返回1

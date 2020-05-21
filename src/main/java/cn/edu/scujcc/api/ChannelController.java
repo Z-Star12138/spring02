@@ -38,12 +38,12 @@ public class ChannelController {
 	private UserServices userService;
 	
 	@GetMapping
-	/**»ñÈ¡ËùÓĞ
+	/**è·å–æ‰€æœ‰
 	 * 
 	 * @return
 	 */
 	public Result<List<Channel>> getAllChannels(){
-		logger.info("ÕıÔÚ»ñÈ¡ËùÓĞÆµµÀÖĞ");
+		logger.info("æ­£åœ¨è·å–æ‰€æœ‰é¢‘é“ä¸­");
 		Result<List<Channel>> result = new Result<List<Channel>>();
 		List<Channel> channels = service.getAllChannels();
 		result = result.ok();
@@ -52,20 +52,20 @@ public class ChannelController {
 	}
 	
 	/**
-	 * »ñÈ¡µ¥¸öÆµµÀ
+	 * è·å–å•ä¸ªé¢‘é“
 	 * @param id
 	 * @return
 	 */
 	@GetMapping("/{id}")
 	public Result<Channel> getChannel(@PathVariable String id) {
-		logger.info("»ñÈ¡ÆµµÀ£¬id="+id);
+		logger.info("è·å–é¢‘é“ï¼Œid="+id);
 		Result<Channel> result = new Result<>();
 		Channel c = service.getChannel(id);
 		if(c != null ) {
 			result = result.ok();
 			result.setDate(c);
 		}else {
-			logger.error("ÕÒ²»µ½Ö¸¶¨µÄÆµµÀ¡£");
+			logger.error("æ‰¾ä¸åˆ°æŒ‡å®šçš„é¢‘é“ã€‚");
 			result = result.error();
 			result.setDate(c);
 		}
@@ -73,32 +73,32 @@ public class ChannelController {
 	}
 	
 	/**
-	 * É¾³ıÆµµÀ
+	 * åˆ é™¤é¢‘é“
 	 * @param id
 	 * @return
 	 */
 	@DeleteMapping("/{id}")
 	public Result<Channel> deleteChannel(@PathVariable String id){
-		logger.info("ÕıÔÚÉ¾³ı£¬id="+id);
+		logger.info("æ­£åœ¨åˆ é™¤ï¼Œid="+id);
 		Result<Channel> result = new Result<>();
 		boolean del = service.deleteChannel(id);
 		if(del) {
 			result = result.ok();
 		}else {
 			result = result.error();
-			result.setMessage("É¾³ıÊ§°Ü");
+			result.setMessage("åˆ é™¤å¤±è´¥");
 		}
 		return result;
 	}
 	
 	/**
-	 * ´´½¨Ò»¸öÆµµÀ
+	 * åˆ›å»ºä¸€ä¸ªé¢‘é“
 	 * @param c
 	 * @return
 	 */
 	@PostMapping
 	public Result<Channel> creatChannel(@RequestBody Channel c) {
-		logger.info("¼´½«´´½¨ĞÂÆµµÀ£¬ÆµµÀÊı¾İ£º" + c);
+		logger.info("å³å°†åˆ›å»ºæ–°é¢‘é“ï¼Œé¢‘é“æ•°æ®ï¼š" + c);
 		Result<Channel> result = new Result<>();
 		Channel saved = service.createChannel(c);
 		result = result.ok();
@@ -107,13 +107,13 @@ public class ChannelController {
 	}
 	
 	/**
-	 * ¸üĞÂÒ»¸öÆµµÀ
+	 * æ›´æ–°ä¸€ä¸ªé¢‘é“
 	 * @param c
 	 * @return
 	 */
 	@PutMapping
 	public Result<Channel> updateChannel(@RequestBody Channel c) {
-		logger.debug("³É¹¦£¬¼´½«¸üĞÂÆµµÀ£¬ÆµµÀÊı¾İ£º" + c);
+		logger.debug("æˆåŠŸï¼Œå³å°†æ›´æ–°é¢‘é“ï¼Œé¢‘é“æ•°æ®ï¼š" + c);
 		Result<Channel> result = new Result<>();
 		Channel updated = service.updateChannel(c);
 		result = result.ok();
@@ -131,7 +131,7 @@ public class ChannelController {
 	}
 	
 	/**
-	 * ÀäÃÅÆµµÀµÄ½Ó¿Ú
+	 * å†·é—¨é¢‘é“çš„æ¥å£
 	 * @return
 	 */
 	@GetMapping("/cold")
@@ -140,7 +140,7 @@ public class ChannelController {
 	}
 	
 	/**
-	 * ·­Ò³µÄ½Ó¿Ú
+	 * ç¿»é¡µçš„æ¥å£
 	 * @param page
 	 * @return
 	 */
@@ -152,10 +152,10 @@ public class ChannelController {
 	@PostMapping("/{channelId}/comment")
 	public Channel addComment(@RequestHeader("token")String token, @PathVariable String channelId,@RequestBody Comment comment) {
 		Channel result = null;
-		logger.debug("¼´½«ÆÀÂÛÆµµÀ"+channelId+"ÆÀÂÛ¶ÔÏó"+comment);
-		//°ÑÆÀÂÛ±£´æµ½Êı¾İ¿â
+		logger.debug("å³å°†è¯„è®ºé¢‘é“"+channelId+"è¯„è®ºå¯¹è±¡"+comment);
+		//æŠŠè¯„è®ºä¿å­˜åˆ°æ•°æ®åº“
 		String username = userService.currentUser(token);
-		logger.debug("µÇÂ¼ÓÃ»§" + username + "ÕıÔÚÆÀÂÛ");
+		logger.debug("ç™»å½•ç”¨æˆ·" + username + "æ­£åœ¨è¯„è®º");
 		comment.setAuthor(username);
 		result = service.addComment(channelId, comment);
 		
@@ -165,7 +165,7 @@ public class ChannelController {
 	@GetMapping("/{channelId}/hotcomments")
 	public Result<List<Comment>> hotComments(@PathVariable String channelId){
 		Result<List<Comment>> result = new Result<List<Comment>>();
-		logger.debug("»ñÈ¡ÆµµÀ" + channelId + "µÄÈÈÃÅÆµµÀ¡£");
+		logger.debug("è·å–é¢‘é“" + channelId + "çš„çƒ­é—¨é¢‘é“ã€‚");
 		result = result.ok();
 		result.setDate(service.hostComments(channelId));
 		return result;

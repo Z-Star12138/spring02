@@ -15,7 +15,7 @@ import cn.edu.scujcc.model.User;
 import cn.edu.scujcc.service.UserServices;
 
 /**
- * ÈÏÖ¤À¹½Ø£¬ÓÃÓÚ¼ì²éÓÃ»§ÊÇ·ñµÇÂ¼¡£
+ * è®¤è¯æ‹¦æˆªï¼Œç”¨äºæ£€æŸ¥ç”¨æˆ·æ˜¯å¦ç™»å½•ã€‚
  * @author Star
  *
  */
@@ -25,34 +25,35 @@ public class Authinterceptor implements HandlerInterceptor {
 	private CacheManager cacheManager;
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 	/**
-	 * Èç¹ûÓÃ»§ÒÑµÇÂ¼£¬Ôò·µ»Øtrue,·ñÔò·µ»Øfalse
+	 * å¦‚æœç”¨æˆ·å·²ç™»å½•ï¼Œåˆ™è¿”å›true,å¦åˆ™è¿”å›false
 	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		boolean logged = false;
 		String target = request.getRequestURI();
-		//°ÑµÇÂ½Óë×¢²áÅÅ³ıÔÚ±£»¤Ö®Íâ
+		//æŠŠç™»é™†ä¸æ³¨å†Œæ’é™¤åœ¨ä¿æŠ¤ä¹‹å¤–
 		if(null != target && target.startsWith("/user")) {
 			return true;
 		}
-		//°Ñ³ö´í½çÃæÒ²±£´æÅÅ³ıÔÚ±£»¤Ö®Íâ
+		//æŠŠå‡ºé”™ç•Œé¢ä¹Ÿä¿å­˜æ’é™¤åœ¨ä¿æŠ¤ä¹‹å¤–
 		if(response.getStatus() == HttpServletResponse.SC_FORBIDDEN) {
 			return true;
 		}
 		
 		String token = request.getHeader("token");
+		logger.debug("TOKEN is  " + token);
 		if(token != null) {
 			Cache cache = cacheManager.getCache(User.CACHE_NAME);
 			String username = cache.get(token, String.class);
 			if(username != null) {
 				logged = true;
-				logger.debug("ÓÃ»§" + username + "ÔÊĞí·ÃÎÊ" + request.getRequestURI());
+				logger.debug("ç”¨æˆ·" + username + "å…è®¸è®¿é—®" + request.getRequestURI());
 			}
 		}
 		if(!logged){
-			logger.warn("·Ç·¨·ÃÎÊ£¡" + request.getRequestURI());
-			response.sendError(HttpServletResponse.SC_FORBIDDEN, "Î´µÇÂ¼ÓÃ»§£¬½ûÖ¹·ÃÎÊ");
+			logger.warn("éæ³•è®¿é—®ï¼" + request.getRequestURI());
+			response.sendError(HttpServletResponse.SC_FORBIDDEN, "æœªç™»å½•ç”¨æˆ·ï¼Œç¦æ­¢è®¿é—®");
 		}
 		return logged;
 	}

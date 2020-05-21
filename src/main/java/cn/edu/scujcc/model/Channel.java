@@ -7,7 +7,7 @@ import java.util.List;
 import org.springframework.data.annotation.Id;
 
 /**
- * ÆµµÀÄ£¿éÀà
+ * é¢‘é“æ¨¡å—ç±»
  * @author Star
  *
  */
@@ -20,7 +20,7 @@ public class Channel implements Serializable{
 	private String quality;
 	private String url;
 	private List<Comment> comments;
-	private String cover;//Ìí¼Ó·âÃæ
+	private String cover;//æ·»åŠ å°é¢
 	
 	public String getCover() {
 		return cover;
@@ -29,7 +29,7 @@ public class Channel implements Serializable{
 		this.cover = cover;
 	}
 	/**
-	 * ·µ»Ø´ËÆµµÀËùÓĞÆÀÂÛ
+	 * è¿”å›æ­¤é¢‘é“æ‰€æœ‰è¯„è®º
 	 * @return
 	 */
 	
@@ -41,8 +41,8 @@ public class Channel implements Serializable{
 	}
 	
 	/**
-	 * Ïòµ±Ç°ÆµµÀÔö¼ÓÒ»ÌõÆÀÂÛ
-	 * @param comment	´ıÔö¼ÓÆÀÂÛ
+	 * å‘å½“å‰é¢‘é“å¢åŠ ä¸€æ¡è¯„è®º
+	 * @param comment	å¾…å¢åŠ è¯„è®º
 	 */
 	public void addComment(Comment comment) {
 		if(null == this.comments) {

@@ -21,15 +21,15 @@ public class UserServices {
 	private static final Logger logger = LoggerFactory.getLogger(UserServices.class);
 	
 	/**
-	 * ĞÂ½¨ÓÃ»§
+	 * æ–°å»ºç”¨æˆ·
 	 */
 	public User createUser(User user)  throws UserExistException  {
-		logger.debug("ÓÃ»§×¢²á" + user);
+		logger.debug("ï¿½Ã»ï¿½×¢ï¿½ï¿½" + user);
 		User result =null;
-		//TODO  1.±£´æÇ°°ÑÓÃ»§ÃÜÂë¼ÓÃÜ
-		//TODO  2.¼ì²éÓÃ»§ÊÇ·ñ´æÔÚ£¬  ´æÔÚÔòÔÊĞí²»Ñ·Ğè×¢²á
+		//TODO  1.ä¿å­˜å‰æŠŠç”¨æˆ·å¯†ç åŠ å¯†
+		//TODO  2.æ£€æŸ¥ç”¨æˆ·æ˜¯å¦å­˜åœ¨ï¼Œ  å­˜åœ¨åˆ™å…è®¸ä¸é€Šéœ€æ³¨å†Œ
 		User u = repo.findOneByUsername(user.getUsername());
-		if (u!= null) {//ËµÃ÷ÓÃ»§ÒÑ±»Õ¼ÓÃ
+		if (u!= null) {//è¯´æ˜ç”¨æˆ·å·²è¢«å ç”¨
 			throw new UserExistException();
 		}
 		result = repo.save(user);
@@ -37,15 +37,15 @@ public class UserServices {
 	}
 	
 	/**
-	 * ¼ì²éÓÃ»§ÃûÓëÃÜÂëÊÇ·ñÆ¥Åä
-	 * @param username  ÓÃ»§µÇÂ½Ãû
-	 * @param password  ÓÃ»§ÃÜÂë
-	 * @return		Èç¹ûÃÜÂëÕıÈ··µ»Øtrue,´íÎó·µ»Øfalse
+	 * æ£€æŸ¥ç”¨æˆ·åä¸å¯†ç æ˜¯å¦åŒ¹é…
+	 * @param username  ç”¨æˆ·ç™»é™†å
+	 * @param password  ç”¨æˆ·å¯†ç 
+	 * @return		å¦‚æœå¯†ç æ­£ç¡®è¿”å›true,é”™è¯¯è¿”å›false
 	 */
 	public boolean checkUser(String username,String password) {
 		boolean result = false;
 		User u = repo.findOneByUsernameAndPassword(username, password);
-		logger.debug("Êı¾İ¿âÖĞµÄÓÃ»§ĞÅÏ¢ÊÇ" + u);
+		logger.debug("æ•°æ®åº“ä¸­çš„ç”¨æˆ·ä¿¡æ¯æ˜¯" + u);
 		if(null != u) {
 			result = true;
 		}
@@ -53,7 +53,7 @@ public class UserServices {
 	}
 	
 	/*
-	 * µÇ¼Ç×¢²á£¬²¢·µ»ØÒ»¸öÎ¨Ò»±àºÅ(token)
+	 * ç™»è®°æ³¨å†Œï¼Œå¹¶è¿”å›ä¸€ä¸ªå”¯ä¸€ç¼–å·(token)
 	 */
 	public String checkIn(String username) {
 		String temp = username + System.currentTimeMillis();
@@ -64,7 +64,7 @@ public class UserServices {
 	}
 	
 	/**
-	 * ¸ù¾İtoken²éÑ¯µ±Ç°ÓÃ»§ÊÇË­
+	 * æ ¹æ®tokenæŸ¥è¯¢å½“å‰ç”¨æˆ·æ˜¯è°
 	 * @param token
 	 * @return
 	 */

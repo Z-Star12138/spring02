@@ -25,26 +25,26 @@ public class ChannelService {
 	public static final Logger logger = LoggerFactory.getLogger(ChannelService.class);
 
 	/**
-	 * »ñÈ¡ËùÓĞÆµµÀ
+	 * è·å–æ‰€æœ‰é¢‘é“
 	 * 
-	 * @return ÆµµÀList
+	 * @return é¢‘é“List
 	 */
 	@Cacheable(cacheNames="channels", key="'all_channels'")
 	public List<Channel> getAllChannels() {
-		logger.debug("(ÆôÓÃ»º´æºó£¬²»ÏÔÊ¾Õâ¾ä»°)´ÓÊı¾İ¿âÖĞ»ñÈ¡ËùÓĞÆµµÀ......");
+		logger.debug("(å¯ç”¨ç¼“å­˜åï¼Œä¸æ˜¾ç¤ºè¿™å¥è¯)ä»æ•°æ®åº“ä¸­è·å–æ‰€æœ‰é¢‘é“......");
 		return repo.findAll();
 	}
 
 	/**
-	 * »ñÈ¡Ò»¸öÆµµÀµÄÊı¾İ
+	 * è·å–ä¸€ä¸ªé¢‘é“çš„æ•°æ®
 	 * 
-	 * @param channelI ÆµµÀ±àºÅ
-	 * @return ÆµµÀ¶ÔÏó£¬ÈôÎ´Îª²éÕÒµ½£¬·µ»Ønull
+	 * @param channelI é¢‘é“ç¼–å·
+	 * @return é¢‘é“å¯¹è±¡ï¼Œè‹¥æœªä¸ºæŸ¥æ‰¾åˆ°ï¼Œè¿”å›null
 	 */
-//	Cacheable×÷ÓÃÊÇ:½«µÚÒ»´Î»ñÈ¡µÄÆµµÀ·ÅÈë»º´æÈ¥£¬#channelIdÊÇµ÷ÓÃstring²ÎÊı£¬·½±ã
+//	Cacheableä½œç”¨æ˜¯:å°†ç¬¬ä¸€æ¬¡è·å–çš„é¢‘é“æ”¾å…¥ç¼“å­˜å»ï¼Œ#channelIdæ˜¯è°ƒç”¨stringå‚æ•°ï¼Œæ–¹ä¾¿
 	@Cacheable(cacheNames="channels", key="#channelId")
 	public Channel getChannel(String channelId) {
-		logger.debug("(ÆôÓÃ»º´æºó£¬²»ÏÔÊ¾Õâ¾ä»°)»ñÈ¡Ò»¸öÆµµÀÖĞ......");
+		logger.debug("(å¯ç”¨ç¼“å­˜åï¼Œä¸æ˜¾ç¤ºè¿™å¥è¯)è·å–ä¸€ä¸ªé¢‘é“ä¸­......");
 		Optional<Channel> result = repo.findById(channelId);
 
 		if (result.isPresent()) {
@@ -55,10 +55,10 @@ public class ChannelService {
 	}
 
 	/**
-	 * É¾³ıÖ¸¶¨µÄÆµµÀ
+	 * åˆ é™¤æŒ‡å®šçš„é¢‘é“
 	 * 
-	 * @param channelId ´ıÉ¾³ıµÄÆµµÀ±àºÅ
-	 * @return ÈôÉ¾³ı³É¹¦Ôò·µ»Øtrue ÈôÊ§°ÜÔò·µ»Øfalse
+	 * @param channelId å¾…åˆ é™¤çš„é¢‘é“ç¼–å·
+	 * @return è‹¥åˆ é™¤æˆåŠŸåˆ™è¿”å›true è‹¥å¤±è´¥åˆ™è¿”å›false
 	 */
 	public boolean deleteChannel(String channelId) {
 		boolean result = true;
@@ -67,26 +67,26 @@ public class ChannelService {
 	}
 
 	/**
-	 * ±£´æÆµµÀ
+	 * ä¿å­˜é¢‘é“
 	 * 
-	 * @param c ´ı±£´æµÄÆµµÀµÄ¶ÔÏó(Ã»ÓĞidÖµ)
-	 * @return ±£´æºóµÄÆµµÀ(ÓĞidÖµ)
+	 * @param c å¾…ä¿å­˜çš„é¢‘é“çš„å¯¹è±¡(æ²¡æœ‰idå€¼)
+	 * @return ä¿å­˜åçš„é¢‘é“(æœ‰idå€¼)
 	 */
-	//CachePut×÷ÓÃÊÇ½«ĞÂÔöµÄÆµµÀÍ¬Ê±Ò²·ÅÈë»º´æÈ¥
+	//CachePutä½œç”¨æ˜¯å°†æ–°å¢çš„é¢‘é“åŒæ—¶ä¹Ÿæ”¾å…¥ç¼“å­˜å»
 	@CachePut(cacheNames="channels", key="#result.id")
 	public Channel createChannel(Channel c) {
 		return repo.save(c);
 	}
 
 	/**
-	 * ¸üĞÂÖ¸¶¨µÄÆµµÀĞÅÏ¢
+	 * æ›´æ–°æŒ‡å®šçš„é¢‘é“ä¿¡æ¯
 	 * 
-	 * @param c ĞÂµÄÆµµÀĞÅÏ¢£¬ÓÃÓÚ¸üĞÂÒÑ´æÔÚµÄÍ¬Ò»ÆµµÀ
-	 * @return ¸üÏ¸ºóµÄÆµµÀĞÅÏ¢
+	 * @param c æ–°çš„é¢‘é“ä¿¡æ¯ï¼Œç”¨äºæ›´æ–°å·²å­˜åœ¨çš„åŒä¸€é¢‘é“
+	 * @return æ›´ç»†åçš„é¢‘é“ä¿¡æ¯
 	 */
 	@CacheEvict(cacheNames="channels", key="'all_channles'")
 	public Channel updateChannel(Channel c) {
-		Channel saved = getChannel(c.getId());// ¶Á³öÓÃ»§Ô­ÓĞµÄÊı¾İ
+		Channel saved = getChannel(c.getId());// è¯»å‡ºç”¨æˆ·åŸæœ‰çš„æ•°æ®
 		if (c.getTitle() != null) {
 			saved.setTitle(c.getTitle());
 		}
@@ -98,9 +98,9 @@ public class ChannelService {
 		}
 
 		if (c.getComments() != null) {
-			if (saved.getComments() != null) {// °ÑÀÏÆÀÂÛÌí¼Óµ½ĞÂÆÀÂÛºóÃæÈ¥
+			if (saved.getComments() != null) {// æŠŠè€è¯„è®ºæ·»åŠ åˆ°æ–°è¯„è®ºåé¢å»
 				saved.getComments().addAll(c.getComments());
-			} else {// ÓÃĞÂÆÀÂÛ´úÌæÀÏµÄ¿ÕÆÀÂÛ
+			} else {// ç”¨æ–°è¯„è®ºä»£æ›¿è€çš„ç©ºè¯„è®º
 				saved.setComments(c.getComments());
 			}
 		}
@@ -120,14 +120,14 @@ public class ChannelService {
 	};
 
 	/*
-	 * »ñÈ¡ÀäÃÅµÄÆµµÀ¡£
+	 * è·å–å†·é—¨çš„é¢‘é“ã€‚
 	 */
 	public List<Channel> findColdChannels() {
 		return repo.findByCommentsNull();
 	}
 
 	/**
-	 * ·­Ò³
+	 * ç¿»é¡µ
 	 * 
 	 * @return
 	 */
@@ -137,16 +137,16 @@ public class ChannelService {
 	}
 
 	/**
-	 * ÏòÖ¸¶¨ÆµµÀÌí¼ÓÒ»ÌõÆÀÂÛ
+	 * å‘æŒ‡å®šé¢‘é“æ·»åŠ ä¸€æ¡è¯„è®º
 	 * 
-	 * @param channelId Ä¿±êÆµµÀ±àºÅ
-	 * @param comment   ¼´½«Ìí¼ÓµÄÆÀÂÛ
+	 * @param channelId ç›®æ ‡é¢‘é“ç¼–å·
+	 * @param comment   å³å°†æ·»åŠ çš„è¯„è®º
 	 * @return
 	 */
 	public Channel addComment(String channelId, Comment comment) {
 		Channel result = null;
 		Channel saved = getChannel(channelId);
-		if (null != saved) {// Êı¾İ¿âÖĞÓĞ¸ÃÆµµÀ
+		if (null != saved) {// æ•°æ®åº“ä¸­æœ‰è¯¥é¢‘é“
 			saved.addComment(comment);
 			result = repo.save(saved);
 		}
@@ -161,9 +161,9 @@ public class ChannelService {
 			result.sort(new Comparator<Comment>() {
 				@Override
 				public int compare(Comment o1, Comment o2) {
-//			    Èôo1<o2£¬·µ»Ø¸ºÊı
-//			    Èôo1>o2£¬·µ»ØÕıÊı
-//			    Èôo1=o2£¬·µ»Ø0
+//				    è‹¥o1<o2ï¼Œè¿”å›è´Ÿæ•°
+//				    è‹¥o1>o2ï¼Œè¿”å›æ­£æ•°
+//				    è‹¥o1=o2ï¼Œè¿”å›0
 					int re = 0;
 					if (o1.getStar() < o2.getStar()) {
 						re = 1;
@@ -176,10 +176,10 @@ public class ChannelService {
 			if (result.size() > 3) {
 				result = result.subList(0, 3);
 			}
-			logger.debug("ÈÈÃÅÆÀÂÛÓĞ" + result.size() + "Ìõ¡£");
+			logger.debug("çƒ­é—¨è¯„è®ºæœ‰" + result.size() + "æ¡ã€‚");
 			logger.debug(result.toString());
 		} else {
-			logger.warn("Ö¸¶¨ÆµµÀ²»´æÔÚ,id=" + channelId);
+			logger.warn("æŒ‡å®šé¢‘é“ä¸å­˜åœ¨,id=" + channelId);
 		}
 		return result;
 	}

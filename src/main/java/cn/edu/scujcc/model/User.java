@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 import org.springframework.data.annotation.Id;
 
 /**
- * 系统用户
+ * 绯荤粺鐢ㄦ埛
  * @author Star
  *
  */

@@ -5,33 +5,34 @@ import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 		
-	/**
-	 * ÆÀÂÛ¶ÔÏó
-	 * @author Star
-	 *
-	 */
+/**
+ * è¯„è®ºå¯¹è±¡
+ * 
+ * @author Star
+ *
+ */
 
 public class Comment implements Serializable{
 		private static final long serialVersionUID = 56165456489158464L;
 
 	/**
-	 * ÆÀÂÛ×÷Õß
+	 * è¯„è®ºä½œè€…
 	 */
 	private String author;
-	
+
 	/**
-	 * ÆÀÂÛÄÚÈİ
+	 * è¯„è®ºå†…å®¹
 	 */
 	private String content;
-	
+
 	/**
-	 * ÆÀÂÛÈÕÆÚÊ±¼ä
+	 * è¯„è®ºæ—¥æœŸæ—¶é—´
 	 */
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime dt = LocalDateTime.now();
 	
 	/**
-	 * ÆÀÂÛµãÔŞÊıÁ¿
+	 * è¯„è®ºç‚¹èµæ•°é‡
 	 */
 	private int star = 6;
 

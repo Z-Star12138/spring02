@@ -13,7 +13,7 @@ public interface ChannelRepository extends MongoRepository<Channel, String>{
 	public List<Channel> findByTitle(String title);
 	
 	/**
-	 * ÕÒ³öÀäÃÅ(ÎŞÆÀµÄ)ÆµµÀ¡£
+	 * æ‰¾å‡ºæ²¡æœ‰è¯„è®ºçš„é¢‘é“ã€‚
 	 * @return
 	 */
 	public List<Channel> findByCommentsNull();
